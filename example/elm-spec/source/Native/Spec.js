@@ -6,31 +6,27 @@ var _gdotdesign$elm_storage$Native_Spec = function() {
 
   var haveText = function(value, selector){
     return task(function(callback){
-      requestAnimationFrame(function(){
-        try {
-          var el = document.querySelector(selector)
-          if(el.textContent === value) {
-            callback(succeed("Text of " + selector + " equals " + value))
-          } else {
-            callback(fail("Text of " + selector + ": " + value + " <=> " + el.textContent))
-          }
-        } catch (e) {
-          callback(fail("Element not found: " + selector))
+      try {
+        var el = document.querySelector(selector)
+        if(el.textContent === value) {
+          callback(succeed("Text of " + selector + " equals " + value))
+        } else {
+          callback(fail("Text of " + selector + ": " + value + " <=> " + el.textContent))
         }
-      })
+      } catch (e) {
+        callback(fail("Element not found: " + selector))
+      }
     })
   }
 
 	var click = function(selector){
     return task(function(callback){
-      requestAnimationFrame(function(){
-        try {
-          document.querySelector(selector).click()
-          callback(succeed("Clicked: " + selector))
-        } catch (e) {
-          callback(fail(""))
-        }
-      })
+      try {
+        document.querySelector(selector).click()
+        callback(succeed("Clicked: " + selector))
+      } catch (e) {
+        callback(fail(""))
+      }
     })
 	}
 
@@ -50,9 +46,18 @@ var _gdotdesign$elm_storage$Native_Spec = function() {
     ].join('-')
   }
 
+  var raf = function(){
+    return task(function(callback){
+      requestAnimationFrame(function(){
+        callback(succeed(tuple0))
+      })
+    })
+  }
+
 	return {
     haveText: F2(haveText),
-		click: click,
+    click: click,
+    raf: raf(),
     uid: uid
 	}
 }()

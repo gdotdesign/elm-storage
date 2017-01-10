@@ -10,6 +10,18 @@ jsdom.env(
     window.localStorage = new LocalStorage('./localStorageTemp');
     var app = window.Elm.Main.embed(window.document.body)
     app.ports.report.subscribe(function(results){
+      var steps = results.reduce(function(memo, test) {
+        return memo + test.results.length
+      }, 0)
+
+      var failed = results.reduce(function(memo, test) {
+        return memo +  test.results.filter(function(result){ return !result.successfull }).length
+      }, 0)
+
+      var successfull = results.reduce(function(memo, test) {
+        return memo + test.results.filter(function(result){ return result.successfull }).length
+      }, 0)
+
       results.forEach(function(test){
         console.log("  " + test.name.bold)
         test.results.forEach(function(result){
@@ -21,6 +33,8 @@ jsdom.env(
         })
         console.log("")
       })
+
+      console.log(`${results.length} tests: ${steps} steps ${successfull} successfull ${failed} failed`)
 
       window.localStorage._deleteLocation()
     })

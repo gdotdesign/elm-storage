@@ -7,6 +7,8 @@ import Storage.Local as Storage
 
 import Task exposing (Task)
 
+import App
+
 import Html
 
 clear : Task String String
@@ -64,8 +66,8 @@ shouldHaveItem key value =
               Task.fail "Doesn't have key"
     )
 
-tests : Node
-tests =
+unitTests : Node
+unitTests =
   describe "Storage.Local"
     [ context "set"
       [ it "should set item"
@@ -84,12 +86,21 @@ tests =
       ]
     ]
 
+integrationTests : Node
+integrationTests =
+  describe "Storage.Local"
+    [ it "should add item"
+      [ shouldHaveText "[]" "div span"
+      , click "button"
+      , shouldHaveText "[\"1\"]" "div span"
+      ]
+    ]
 
 main =
   program
-    { init = ""
-    , view = \_ -> Html.text ""
-    , update = \_ _ -> ("", Cmd.none)
-    , subscriptions = \_ -> Sub.none
+    { init = App.init ()
+    , view = App.view
+    , update = App.update
+    , subscriptions = App.subscriptions
     }
-    (flatten [] [] tests)
+    (describe "Tests" [ integrationTests, unitTests ])

@@ -48,7 +48,9 @@ update msg model =
                 { model
                 | tests = { updatedTest | steps = remainingSteps } :: remainingTests
                 } !
-                [ Task.attempt (Next << Just) step
+                [ Native.Spec.raf
+                  |> Task.andThen (\_ -> step)
+                  |> Task.attempt (Next << Just)
                 ]
 
               [] ->
@@ -67,16 +69,20 @@ run tests =
     [] -> Cmd.none
 
 program data tests =
-  Html.program
-    { init = ({ app = data.init, update = data.update, view = data.view, tests = tests, finishedTests = [] }, run tests)
-    , update = update
-    , subscriptions = (\_ -> Sub.none)
-    , view = \model ->
-      if List.isEmpty model.tests then
-        Html.div [] (renderResults model.finishedTests)
-      else
-        Html.map App (model.view model.app)
-    }
+  let
+    tests_ =
+      Spec.flatten [] [] tests
+  in
+    Html.program
+      { init = ({ app = data.init, update = data.update, view = data.view, tests = tests_, finishedTests = [] }, run tests_)
+      , update = update
+      , subscriptions = (\_ -> Sub.none)
+      , view = \model ->
+        if List.isEmpty model.tests then
+          Html.div [] (renderResults model.finishedTests)
+        else
+          Html.map App (model.view model.app)
+      }
 
 renderTest model =
   let
