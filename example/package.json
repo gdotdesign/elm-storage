@@ -1,9 +1,12 @@
 {
   "scripts": {
     "start": "elm-reactor -p 8002",
-    "compile": "elm-make Main.elm --output index.js"
+    "prespec": "yarn run compile",
+    "spec": "node elm-spec/lib/test.js",
+    "compile": "elm-make Tests.elm --output index.js"
   },
   "dependencies": {
+    "colors": "^1.1.2",
     "elm": "^0.18.0",
     "jsdom": "^9.9.1",
     "node-localstorage": "^1.3.0"

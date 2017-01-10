@@ -1,17 +1,21 @@
-var _gdotdesign$elm_storage$Native_Test = function() {
-  window.localStorage.clear()
+var _gdotdesign$elm_storage$Native_Spec = function() {
   var task = _elm_lang$core$Native_Scheduler.nativeBinding
   var succeed = _elm_lang$core$Native_Scheduler.succeed
+  var fail = _elm_lang$core$Native_Scheduler.fail
+  var tuple0 = _elm_lang$core$Native_Utils.Tuple0
 
-  var assertText = function(selector, value){
+  var haveText = function(value, selector){
     return task(function(callback){
       requestAnimationFrame(function(){
         try {
           var el = document.querySelector(selector)
-          console.log(el, el.textContent, value)
-          callback(succeed(el.textContent === value))
+          if(el.textContent === value) {
+            callback(succeed("Text of " + selector + " equals " + value))
+          } else {
+            callback(fail("Text of " + selector + ": " + value + " <=> " + el.textContent))
+          }
         } catch (e) {
-          callback(succeed(false))
+          callback(fail("Element not found: " + selector))
         }
       })
     })
@@ -22,9 +26,9 @@ var _gdotdesign$elm_storage$Native_Test = function() {
       requestAnimationFrame(function(){
         try {
           document.querySelector(selector).click()
-          callback(succeed(true))
+          callback(succeed("Clicked: " + selector))
         } catch (e) {
-          callback(succeed(false))
+          callback(fail(""))
         }
       })
     })
@@ -47,7 +51,7 @@ var _gdotdesign$elm_storage$Native_Test = function() {
   }
 
 	return {
-    assertText: F2(assertText),
+    haveText: F2(haveText),
 		click: click,
     uid: uid
 	}

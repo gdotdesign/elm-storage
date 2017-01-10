@@ -3,8 +3,6 @@ module App exposing (..)
 import Html.Events exposing (onClick)
 import Html exposing (..)
 
-import Test
-
 import Storage.Local as Storage
 
 type alias Model
@@ -14,7 +12,7 @@ type Msg
   = Remove Int
   | Add
 
-init =
+init () =
   refresh ()
 
 refresh _ =

@@ -1,13 +1,11 @@
 {
   "version": "1.0.0",
-  "summary": "Storage APIs for Elm",
-  "repository": "https://github.com/gdotdesign/elm-storage.git",
+  "summary": "Integration testing in Elm.",
+  "repository": "https://github.com/gdotdesign/elm-spec.git",
   "license": "BSD3",
   "native-modules": true,
   "source-directories": [
-    ".",
-    "elm-spec/source",
-    "../source"
+    "source"
   ],
   "exposed-modules": [],
   "dependencies": {
