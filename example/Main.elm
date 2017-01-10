@@ -3,6 +3,8 @@ module Main exposing (..)
 import Html.Events exposing (onClick)
 import Html exposing (..)
 
+import Test
+
 import Storage.Local as Storage
 
 type alias Model
@@ -44,6 +46,7 @@ subscriptions model =
 view model =
   div []
     [ text (toString model)
+    , text (toString (Test.flatten [] [] Test.tests |> Test.run))
     , button [onClick Add] [text "Add"]
     ]
 

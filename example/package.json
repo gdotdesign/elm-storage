@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "start": "elm-reactor -p 8002",
+    "compile": "elm-make Main.elm --output index.js"
+  },
+  "dependencies": {
+    "elm": "^0.18.0",
+    "jsdom": "^9.9.1",
+    "node-localstorage": "^1.3.0"
+  }
+}

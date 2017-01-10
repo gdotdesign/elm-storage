@@ -1,0 +1,28 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/home/gdot/.nvm/v4.2.2/bin/node',
+1 verbose cli   '/home/gdot/.nvm/v4.2.2/bin/npm',
+1 verbose cli   'run',
+1 verbose cli   'elm-reactor',
+1 verbose cli   '-p',
+1 verbose cli   '8002' ]
+2 info using npm@3.8.0
+3 info using node@v4.2.2
+4 verbose stack Error: missing script: elm-reactor
+4 verbose stack     at run (/home/gdot/.nvm/v4.2.2/lib/node_modules/npm/lib/run-script.js:147:19)
+4 verbose stack     at /home/gdot/.nvm/v4.2.2/lib/node_modules/npm/lib/run-script.js:57:5
+4 verbose stack     at /home/gdot/.nvm/v4.2.2/lib/node_modules/npm/node_modules/read-package-json/read-json.js:345:5
+4 verbose stack     at checkBinReferences_ (/home/gdot/.nvm/v4.2.2/lib/node_modules/npm/node_modules/read-package-json/read-json.js:309:45)
+4 verbose stack     at final (/home/gdot/.nvm/v4.2.2/lib/node_modules/npm/node_modules/read-package-json/read-json.js:343:3)
+4 verbose stack     at then (/home/gdot/.nvm/v4.2.2/lib/node_modules/npm/node_modules/read-package-json/read-json.js:113:5)
+4 verbose stack     at ReadFileContext.<anonymous> (/home/gdot/.nvm/v4.2.2/lib/node_modules/npm/node_modules/read-package-json/read-json.js:284:20)
+4 verbose stack     at ReadFileContext.callback (/home/gdot/.nvm/v4.2.2/lib/node_modules/npm/node_modules/graceful-fs/graceful-fs.js:78:16)
+4 verbose stack     at FSReqWrap.readFileAfterOpen [as oncomplete] (fs.js:303:13)
+5 verbose cwd /home/gdot/Projects/elm-storage/example
+6 error Linux 3.13.0-105-generic
+7 error argv "/home/gdot/.nvm/v4.2.2/bin/node" "/home/gdot/.nvm/v4.2.2/bin/npm" "run" "elm-reactor" "-p" "8002"
+8 error node v4.2.2
+9 error npm  v3.8.0
+10 error missing script: elm-reactor
+11 error If you need help, you may report this error at:
+11 error     <https://github.com/npm/npm/issues>
+12 verbose exit [ 1, true ]

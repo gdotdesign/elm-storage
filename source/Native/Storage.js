@@ -51,7 +51,6 @@ var _gdotdesign$elm_storage$Native_Storage = function() {
 
   var set = function(kind, key, value) {
     return withStorage(kind, function(storage) {
-      console.log(key, value)
       storage.setItem(key, value)
       return tuple0
     })
