@@ -4,6 +4,9 @@ module Storage.Error exposing (..)
 
 @docs Error
 -}
+import Native.JsCookie
+import Native.Storage
+
 
 {-| The following errors can happen when interacting with storage interfaces.
 -}

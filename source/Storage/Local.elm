@@ -24,7 +24,6 @@ module Storage.Local exposing
 -}
 import Storage.Error exposing (Error)
 import Task exposing (Task)
-import Native.Storage
 
 
 {-| Transforms a function into a task.
