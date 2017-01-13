@@ -1,4 +1,4 @@
-module Storage.Local exposing
+module Storage.Session exposing
   ( clear
   , clearSync
   , set
@@ -13,7 +13,7 @@ module Storage.Local exposing
   , keysSync
   )
 
-{-| LocalStorage interface offering synchronous and asynchronous functions
+{-| SessionStorage interface offering synchronous and asynchronous functions
 (tasks).
 
 # Asynchronous
@@ -27,18 +27,18 @@ import Storage.Error exposing (Error)
 import Task exposing (Task)
 
 
-{-| Clears local storage asynchronously.
+{-| Clears session storage asynchronously.
 -}
 clear : Task Error ()
 clear =
   fromFunction clearSync
 
 
-{-| Clears local storage synchronously.
+{-| Clears session storage synchronously.
 -}
 clearSync : () -> Result Error ()
 clearSync _ =
-  Native.Storage.clear "local"
+  Native.Storage.clear "session"
 
 
 {-| Sets an item with the given key to the given value asynchronously.
@@ -52,7 +52,7 @@ set key value =
 -}
 setSync : String -> String -> Result Error ()
 setSync key value =
-  Native.Storage.set "local" key value
+  Native.Storage.set "session" key value
 
 
 {-| Gets an item with the given key asynchronously.
@@ -66,7 +66,7 @@ get key =
 -}
 getSync : String -> Result Error (Maybe String)
 getSync key =
-  Native.Storage.get "local" key
+  Native.Storage.get "session" key
 
 
 {-| Removes an item with the given key asynchronously.
@@ -80,32 +80,32 @@ remove key =
 -}
 removeSync : String -> Result Error ()
 removeSync key =
-  Native.Storage.remove "local" key
+  Native.Storage.remove "session" key
 
 
-{-| Returns how many items are in the local storage asynchronously.
+{-| Returns how many items are in the session storage asynchronously.
 -}
 length : Task Error Int
 length =
   fromFunction (lengthSync >> Ok)
 
 
-{-| Returns how many items are in the local storage synchronously.
+{-| Returns how many items are in the session storage synchronously.
 -}
 lengthSync : () -> Int
 lengthSync _ =
-  Native.Storage.length "local"
+  Native.Storage.length "session"
 
 
-{-| Returns the keys of the items in local storage asynchronously.
+{-| Returns the keys of the items in session storage asynchronously.
 -}
 keys : Task Error (List String)
 keys =
   fromFunction (keysSync >> Ok)
 
 
-{-| Returns the keys of the items in local storage synchronously.
+{-| Returns the keys of the items in session storage synchronously.
 -}
 keysSync : () -> List String
 keysSync _ =
-  Native.Storage.keys "local"
+  Native.Storage.keys "session"
