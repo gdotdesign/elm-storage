@@ -201,6 +201,15 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
 
+elm, elm@^0.18.0:
+  version "0.18.0"
+  resolved "https://registry.yarnpkg.com/elm/-/elm-0.18.0.tgz#919b8309cd939dfe2ff9d252d961b6c89509b970"
+  dependencies:
+    mkdirp "0.5.1"
+    promise "7.1.1"
+    request "2.74.0"
+    tar "2.2.1"
+
 elm-github-install, elm-github-install@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/elm-github-install/-/elm-github-install-0.3.0.tgz#2b631ff0cbcef8b3d51296879267a65db5e83444"
@@ -224,15 +233,6 @@ elm-spec@gdotdesign/elm-spec:
     node-localstorage "^1.3.0"
     npm-which "^3.0.1"
     temp "^0.8.3"
-
-elm@^0.18.0:
-  version "0.18.0"
-  resolved "https://registry.yarnpkg.com/elm/-/elm-0.18.0.tgz#919b8309cd939dfe2ff9d252d961b6c89509b970"
-  dependencies:
-    mkdirp "0.5.1"
-    promise "7.1.1"
-    request "2.74.0"
-    tar "2.2.1"
 
 end-of-stream@^1.0.0, end-of-stream@^1.1.0:
   version "1.1.0"

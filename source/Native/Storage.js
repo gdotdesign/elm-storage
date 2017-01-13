@@ -26,9 +26,11 @@ var _gdotdesign$elm_storage$Native_Storage = function() {
 
       return ok(result)
     } catch (error) {
-      switch(error.type) {
+      switch(error.name) {
         case 'SecurityError':
           return err('NotAllowed')
+        case 'QUOTA_EXCEEDED_ERR':
+          return err('QuotaExceeded')
         case 'QuotaExceededError':
           return err('QuotaExceeded')
         default:
@@ -65,7 +67,7 @@ var _gdotdesign$elm_storage$Native_Storage = function() {
 
   var remove = function(kind, key) {
     return withStorage(kind, function(storage) {
-      storage.removeItem(kind)
+      storage.removeItem(key)
       return tuple0
     })
   }

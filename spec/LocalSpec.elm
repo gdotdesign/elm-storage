@@ -3,81 +3,78 @@ import Spec.Runner exposing (..)
 import Spec.Steps exposing (..)
 import Spec exposing (..)
 
+import Storage.Error exposing (Error)
 import Storage.Local as Storage
+
+import Steps
 
 import Task exposing (Task, succeed)
 
+remove : String -> Task Never Outcome
+remove key =
+  Steps.remove key Storage.remove
+
 clear : Task Never Outcome
 clear =
-  succeed ""
-  |> Task.map
-    (\_ ->
-      case Storage.clear () of
-        Err error -> fail (toString error)
-        Ok () -> pass "Cleared local storage"
-    )
+  Steps.clear Storage.clear
 
 set : String -> String -> Task Never Outcome
 set key value =
-  succeed ""
-  |> Task.map
-    (\_ ->
-      case Storage.set key value of
-        Err error -> fail (toString error)
-        Ok () -> pass ("Set value of key " ++ key ++ " to " ++ value)
-    )
+  Steps.set key value Storage.set
 
-shouldNotHaveItem : String -> Task Never Outcome
-shouldNotHaveItem key =
-  succeed ""
-  |> Task.map
-    (\_ ->
-      case Storage.get key of
-        Err error -> fail (toString error)
-        Ok maybeValue ->
-          case maybeValue of
-            Just val ->
-              pass "Has item"
+hasItem : String -> Task Never Outcome
+hasItem key =
+  Steps.hasItem key Storage.get
 
-            Nothing ->
-              pass "Doesn't have key"
-    )
+doesNotHaveItem : String -> Task Never Outcome
+doesNotHaveItem key =
+  Steps.hasItem key Storage.get
+  |> Spec.Assertions.flip
 
-shouldHaveItem : String -> String -> Task Never Outcome
-shouldHaveItem key value =
-  succeed ""
-  |> Task.map
-    (\_ ->
-      case Storage.get key of
-        Err error -> fail (toString error)
-        Ok maybeValue ->
-          case maybeValue of
-            Just val ->
-              if value == val then
-                pass ("Has key " ++ key ++ " with value " ++ value)
-              else
-                fail "Not same value"
-
-            Nothing ->
-              fail "Doesn't have key"
-    )
+valueEquals : String -> String -> Task Never Outcome
+valueEquals key value =
+  Steps.valueEquals key value Storage.get
 
 tests : Node
 tests =
   describe "Storage.Local"
     [ context ".set"
       [ it "should set item"
-        [ shouldNotHaveItem "test"
+        [ doesNotHaveItem "test"
         , set "test" "test"
-        , shouldHaveItem "test" "test"
+        , valueEquals "test" "test"
+        ]
+      , it "should fail for large files"
+        [ clear
+        , doesNotHaveItem "test"
+        , set "test" (String.repeat 50000000 "a")
+          |> Spec.Assertions.flip
+        ]
+      ]
+    , context ".remove"
+      [ it "should remove items"
+        [ clear
+        , doesNotHaveItem "test"
+        , set "test" "test"
+        , hasItem "test"
+        , remove "test"
+        , doesNotHaveItem "test"
+        ]
+      , it "should not fail if key is not present"
+        [ clear
+        , doesNotHaveItem "test"
+        , remove "test"
+        , doesNotHaveItem "test"
         ]
       ]
     , context ".clear"
       [ it "should clear items"
-        [ set "test" "test"
-        , shouldHaveItem "test" "test"
+        [ clear
+        , doesNotHaveItem "test"
+        , set "test" "test"
+        , valueEquals "test" "test"
         , clear
-        , shouldNotHaveItem "test"
+        , doesNotHaveItem "test"
         ]
       ]
     ]

@@ -1,5 +1,9 @@
 {
+  "scripts": {
+    "start": "elm-reactor -p 8002"
+  },
   "dependencies": {
+    "elm": "^0.18.0",
     "elm-github-install": "^0.3.0",
     "elm-spec": "gdotdesign/elm-spec"
   }
