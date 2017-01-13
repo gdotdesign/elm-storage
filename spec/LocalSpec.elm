@@ -1,107 +1,69 @@
-import Spec.Assertions exposing (..)
 import Spec.Runner exposing (..)
 import Spec.Steps exposing (..)
 import Spec exposing (..)
+import Spec.Assertions
 
-import Storage.Error exposing (Error)
-import Storage.Local as Storage
-
-import Steps
-
-import Task exposing (Task, succeed)
-
-remove : String -> Task Never Outcome
-remove key =
-  Steps.remove key Storage.remove
-
-clear : Task Never Outcome
-clear =
-  Steps.clear Storage.clear
-
-set : String -> String -> Task Never Outcome
-set key value =
-  Steps.set key value Storage.set
-
-hasItem : String -> Task Never Outcome
-hasItem key =
-  Steps.hasItem key Storage.get
-
-haveKeys : List String -> Task Never Outcome
-haveKeys keys =
-  Steps.haveKeys keys Storage.keys
-
-doesNotHaveItem : String -> Task Never Outcome
-doesNotHaveItem key =
-  Steps.hasItem key Storage.get
-  |> Spec.Assertions.flip
-
-valueEquals : String -> String -> Task Never Outcome
-valueEquals key value =
-  Steps.valueEquals key value Storage.get
-
-haveNumberOfItems : Int -> Task Never Outcome
-haveNumberOfItems count =
-  Steps.haveNumberOfItems count Storage.length
+import Storage.Spec.Local exposing (localStorage)
 
 tests : Node
 tests =
   describe "Storage.Local"
     [ context ".set"
       [ it "should set item"
-        [ doesNotHaveItem "test"
-        , set "test" "test"
-        , valueEquals "test" "test"
+        [ localStorage.doesNotHaveItem "test"
+        , localStorage.set "test" "test"
+        , localStorage.valueEquals "test" "test"
         ]
       , it "should fail for large files"
-        [ clear
-        , doesNotHaveItem "test"
-        , set "test" (String.repeat 50000000 "a")
+        [ localStorage.clear
+        , localStorage.doesNotHaveItem "test"
+        , localStorage.set "test" (String.repeat 50000000 "a")
           |> Spec.Assertions.flip
         ]
       ]
     , context ".remove"
       [ it "should remove items"
-        [ clear
-        , doesNotHaveItem "test"
-        , set "test" "test"
-        , hasItem "test"
-        , remove "test"
-        , doesNotHaveItem "test"
+        [ localStorage.clear
+        , localStorage.doesNotHaveItem "test"
+        , localStorage.set "test" "test"
+        , localStorage.hasItem "test"
+        , localStorage.remove "test"
+        , localStorage.doesNotHaveItem "test"
         ]
       , it "should not fail if key is not present"
-        [ clear
-        , doesNotHaveItem "test"
-        , remove "test"
-        , doesNotHaveItem "test"
+        [ localStorage.clear
+        , localStorage.doesNotHaveItem "test"
+        , localStorage.remove "test"
+        , localStorage.doesNotHaveItem "test"
         ]
       ]
     , context ".keys"
       [ it "should return keys"
-        [ clear
-        , haveKeys []
-        , set "test" "test"
-        , set "asd" "asd"
-        , haveKeys ["asd", "test"]
+        [ localStorage.clear
+        , localStorage.haveKeys []
+        , localStorage.set "test" "test"
+        , localStorage.set "asd" "asd"
+        , localStorage.haveKeys ["asd", "test"]
         ]
       ]
     , context ".length"
       [ it "should return count of items"
-        [ clear
-        , haveNumberOfItems 0
-        , set "test" "test"
-        , haveNumberOfItems 1
-        , set "asd" "asd"
-        , haveNumberOfItems 2
+        [ localStorage.clear
+        , localStorage.haveNumberOfItems 0
+        , localStorage.set "test" "test"
+        , localStorage.haveNumberOfItems 1
+        , localStorage.set "asd" "asd"
+        , localStorage.haveNumberOfItems 2
         ]
       ]
     , context ".clear"
       [ it "should clear items"
-        [ clear
-        , doesNotHaveItem "test"
-        , set "test" "test"
-        , valueEquals "test" "test"
-        , clear
-        , doesNotHaveItem "test"
+        [ localStorage.clear
+        , localStorage.doesNotHaveItem "test"
+        , localStorage.set "test" "test"
+        , localStorage.valueEquals "test" "test"
+        , localStorage.clear
+        , localStorage.doesNotHaveItem "test"
         ]
       ]
     ]

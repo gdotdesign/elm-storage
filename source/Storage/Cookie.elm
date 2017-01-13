@@ -3,6 +3,8 @@ module Storage.Cookie exposing
   , getSync
   , set
   , setSync
+  , setWithOptions
+  , setWithOptionsSync
   , clear
   , clearSync
   , remove
@@ -13,9 +15,28 @@ module Storage.Cookie exposing
   , keysSync
   )
 
+{-| Module for reading and manipulating cookies.
+
+# Asynchronous
+@docs get, set, setWithOptions, clear, remove, length, keys
+
+# Synchronous
+@docs getSync, setSync, setWithOptionsSync, clearSync, removeSync, lengthSync
+@docs keysSync
+-}
 import Storage.Utils exposing (fromFunction)
 import Storage.Error exposing (Error)
 import Task exposing (Task)
+
+
+{-| Options for setting and removing cookies.
+-}
+type alias Options =
+  { domain : String
+  , secure : String
+  , path : String
+  , expires : Int
+  }
 
 
 {-| Gets the cookie with the given key asynchronously.
@@ -39,11 +60,27 @@ set key value =
   fromFunction <| \_ -> setSync key value
 
 
+{-| Sets the cookie with the given key to the given value with the given
+options asynchronously.
+-}
+setWithOptions : String -> String -> Options -> Task Error ()
+setWithOptions key value options =
+  fromFunction <| \_ -> setWithOptionsSync key value options
+
+
 {-| Sets the cookie with the given key to the given value synchronously.
 -}
 setSync : String -> String -> Result Error ()
 setSync key value =
   Native.Storage.setCookie key value
+
+
+{-| Sets the cookie with the given key to the given value with the given
+options asynchronously.
+-}
+setWithOptionsSync : String -> String -> Options -> Result Error ()
+setWithOptionsSync key value options =
+  Native.Storage.setCookie key value options
 
 
 {-| Clears all cookies asynchronously.

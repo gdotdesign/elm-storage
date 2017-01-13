@@ -13,8 +13,7 @@ module Storage.Session exposing
   , keysSync
   )
 
-{-| SessionStorage interface offering synchronous and asynchronous functions
-(tasks).
+{-| Module for manipulating session storage.
 
 # Asynchronous
 @docs get, set, clear, remove, length, keys

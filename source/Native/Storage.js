@@ -103,9 +103,9 @@ var _gdotdesign$elm_storage$Native_Storage = function() {
     })
   }
 
-  var setCookie = function(name, value) {
+  var setCookie = function(name, value, options) {
     return withErrors(function(){
-      Cookies.set(name, value)
+      Cookies.set(name, value, options)
       return ok(tuple0)
     })
   }

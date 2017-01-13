@@ -1,4 +1,4 @@
-module Steps exposing (..)
+module Storage.Spec.Steps exposing (..)
 
 import Spec.Assertions exposing (Outcome, fail, pass, error)
 import Storage.Error exposing (Error)

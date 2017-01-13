@@ -13,8 +13,7 @@ module Storage.Local exposing
   , keysSync
   )
 
-{-| LocalStorage interface offering synchronous and asynchronous functions
-(tasks).
+{-| Module for manipulating local storage.
 
 # Asynchronous
 @docs get, set, clear, remove, length, keys

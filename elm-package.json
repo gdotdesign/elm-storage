@@ -9,7 +9,9 @@
     "spec"
   ],
   "exposed-modules": [
+    "Storage.Spec.Local",
     "Storage.Session",
+    "Storage.Cookie",
     "Storage.Local",
     "Storage.Error"
   ],

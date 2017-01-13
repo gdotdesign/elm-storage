@@ -6,7 +6,7 @@ import Spec exposing (..)
 import Storage.Error exposing (Error)
 import Storage.Cookie as Storage
 
-import Steps
+import Storage.Spec.Steps as Steps
 
 import Task exposing (Task, succeed)
 
