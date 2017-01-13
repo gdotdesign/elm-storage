@@ -1,98 +1,59 @@
-import Spec.Assertions exposing (..)
-import Spec.Runner exposing (..)
-import Spec.Steps exposing (..)
-import Spec exposing (..)
+import Spec exposing (Node, describe, it, context)
+import Spec.Assertions
+import Spec.Runner
 
-import Storage.Error exposing (Error)
-import Storage.Cookie as Storage
-
-import Storage.Spec.Steps as Steps
-
-import Task exposing (Task, succeed)
-
-remove : String -> Task Never Outcome
-remove key =
-  Steps.remove key Storage.remove
-
-set : String -> String -> Task Never Outcome
-set key value =
-  Steps.set key value Storage.set
-
-clear : Task Never Outcome
-clear =
-  Steps.clear Storage.clear
-
-hasItem : String -> Task Never Outcome
-hasItem key =
-  Steps.hasItem key Storage.get
-
-haveKeys : List String -> Task Never Outcome
-haveKeys keys =
-  Steps.haveKeys keys Storage.keys
-
-doesNotHaveItem : String -> Task Never Outcome
-doesNotHaveItem key =
-  Steps.hasItem key Storage.get
-  |> Spec.Assertions.flip
-
-valueEquals : String -> String -> Task Never Outcome
-valueEquals key value =
-  Steps.valueEquals key value Storage.get
-
-haveNumberOfItems : Int -> Task Never Outcome
-haveNumberOfItems count =
-  Steps.haveNumberOfItems count Storage.length
+import Storage.Spec.Cookie exposing (cookies)
 
 tests : Node
 tests =
-  describe "Storage.Local"
+  describe "Storage.Cookie"
     [ context ".get"
       [ it "should get cookie"
-        [ clear
-        , doesNotHaveItem "test"
-        , set "test" "test"
-        , hasItem "test"
+        [ cookies.clear
+        , cookies.doesNotHaveItem "user"
+        , cookies.set "user" "yoda"
+        , cookies.valueEquals "user" "yoda"
         ]
       ]
     , context ".set"
       [ it "should set cookie"
-        [ clear
-        , doesNotHaveItem "test"
-        , set "test" "test"
-        , valueEquals "test" "test"
+        [ cookies.clear
+        , cookies.doesNotHaveItem "user"
+        , cookies.set "user" "yoda"
+        , cookies.valueEquals "user" "yoda"
         ]
       ]
     , context ".clear"
       [ it "should clear all cookies"
-        [ clear
-        , doesNotHaveItem "test"
-        , set "test" "test"
-        , set "asd" "asd"
-        , hasItem "test"
-        , hasItem "asd"
-        , clear
-        , doesNotHaveItem "test"
-        , doesNotHaveItem "asd"
+        [ cookies.clear
+        , cookies.doesNotHaveItem "user"
+        , cookies.set "user" "yoda"
+        , cookies.set "place" "jedi-temple"
+        , cookies.hasItem "user"
+        , cookies.hasItem "place"
+        , cookies.clear
+        , cookies.doesNotHaveItem "user"
+        , cookies.doesNotHaveItem "place"
         ]
       ]
     , context ".remove"
       [ it "should remove a cookie"
-        [ clear
-        , doesNotHaveItem "test"
-        , set "test" "test"
-        , hasItem "test"
-        , remove "test"
-        , doesNotHaveItem "test"
+        [ cookies.clear
+        , cookies.doesNotHaveItem "user"
+        , cookies.set "user" "yoda"
+        , cookies.hasItem "user"
+        , cookies.remove "user"
+        , cookies.doesNotHaveItem "user"
         ]
       ]
     , context ".keys"
       [ it "should return keys"
-        [ clear
-        , doesNotHaveItem "test"
-        , set "test" "test"
-        , set "asd" "asd"
-        , haveNumberOfItems 2
-        , haveKeys ["asd", "test"]
+        [ cookies.clear
+        , cookies.doesNotHaveItem "user"
+        , cookies.set "user" "yoda"
+        , cookies.set "place" "jedi-temple"
+        , cookies.haveNumberOfItems 2
+        , cookies.haveItems ["place", "user"]
         ]
       ]
     ]
