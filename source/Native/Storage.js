@@ -110,18 +110,18 @@ var _gdotdesign$elm_storage$Native_Storage = function() {
     })
   }
 
-  var clearCookies = function() {
+  var clearCookies = function(options) {
     return withErrors(function(){
       for (var key in Cookies.get()) {
-        Cookies.remove(key)
+        Cookies.remove(key, options)
       }
       return ok(tuple0)
     })
   }
 
-  var removeCookie = function(name) {
+  var removeCookie = function(name, options) {
     return withErrors(function(){
-      Cookies.remove(name)
+      Cookies.remove(name, options)
       return ok(tuple0)
     })
   }
@@ -139,10 +139,10 @@ var _gdotdesign$elm_storage$Native_Storage = function() {
   }
 
   return {
+    removeCookie: F2(removeCookie),
     cookiesLength: cookiesLength,
     clearCookies: clearCookies,
-    removeCookie: removeCookie,
-    setCookie: F2(setCookie),
+    setCookie: F3(setCookie),
     cookieKeys: cookieKeys,
     getCookie: getCookie,
     remove: F2(remove),

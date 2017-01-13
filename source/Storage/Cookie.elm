@@ -3,8 +3,6 @@ module Storage.Cookie exposing
   , getSync
   , set
   , setSync
-  , setWithOptions
-  , setWithOptionsSync
   , clear
   , clearSync
   , remove
@@ -13,29 +11,42 @@ module Storage.Cookie exposing
   , lengthSync
   , keys
   , keysSync
+  , SetOptions
+  , RemoveOptions
   )
 
 {-| Module for reading and manipulating cookies.
 
 # Asynchronous
-@docs get, set, setWithOptions, clear, remove, length, keys
+@docs get, set, clear, remove, length, keys
 
 # Synchronous
-@docs getSync, setSync, setWithOptionsSync, clearSync, removeSync, lengthSync
+@docs getSync, setSync, clearSync, removeSync, lengthSync
 @docs keysSync
+
+# Options
+@docs SetOptions, RemoveOptions
 -}
 import Storage.Utils exposing (fromFunction)
 import Storage.Error exposing (Error)
 import Task exposing (Task)
 
 
-{-| Options for setting and removing cookies.
+{-| Options for setting cookies.
 -}
-type alias Options =
+type alias SetOptions =
   { domain : String
-  , secure : String
+  , expires : Float
+  , secure : Bool
   , path : String
-  , expires : Int
+  }
+
+
+{-| Options for removing cookies.
+-}
+type alias RemoveOptions =
+  { domain : String
+  , path : String
   }
 
 
@@ -55,60 +66,44 @@ getSync key =
 
 {-| Sets the cookie with the given key to the given value asynchronously.
 -}
-set : String -> String -> Task Error ()
-set key value =
-  fromFunction <| \_ -> setSync key value
-
-
-{-| Sets the cookie with the given key to the given value with the given
-options asynchronously.
--}
-setWithOptions : String -> String -> Options -> Task Error ()
-setWithOptions key value options =
-  fromFunction <| \_ -> setWithOptionsSync key value options
+set : String -> String -> SetOptions -> Task Error ()
+set key value options =
+  fromFunction <| \_ -> setSync key value options
 
 
 {-| Sets the cookie with the given key to the given value synchronously.
 -}
-setSync : String -> String -> Result Error ()
-setSync key value =
-  Native.Storage.setCookie key value
-
-
-{-| Sets the cookie with the given key to the given value with the given
-options asynchronously.
--}
-setWithOptionsSync : String -> String -> Options -> Result Error ()
-setWithOptionsSync key value options =
+setSync : String -> String -> SetOptions -> Result Error ()
+setSync key value options =
   Native.Storage.setCookie key value options
 
 
 {-| Clears all cookies asynchronously.
 -}
-clear : Task Error ()
-clear =
-  fromFunction clearSync
+clear : RemoveOptions -> Task Error ()
+clear options =
+  fromFunction <| \_ -> clearSync options
 
 
 {-| Clears all cookies synchronously.
 -}
-clearSync : () -> Result Error ()
-clearSync _ =
-  Native.Storage.clearCookies ""
+clearSync : RemoveOptions -> Result Error ()
+clearSync options =
+  Native.Storage.clearCookies options
 
 
 {-| Removes teh cookie with the given key asynchronously.
 -}
-remove : String -> Task Error ()
-remove key =
-  fromFunction <| \_ -> removeSync key
+remove : String -> RemoveOptions -> Task Error ()
+remove key options =
+  fromFunction <| \_ -> removeSync key options
 
 
 {-| Removes teh cookie with the given key synchronously.
 -}
-removeSync : String -> Result Error ()
-removeSync key =
-  Native.Storage.removeCookie key
+removeSync : String -> RemoveOptions -> Result Error ()
+removeSync key options =
+  Native.Storage.removeCookie key options
 
 
 {-| Returns how many cookies the document has asynchronously.
