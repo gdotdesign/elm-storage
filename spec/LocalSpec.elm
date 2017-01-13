@@ -26,6 +26,10 @@ hasItem : String -> Task Never Outcome
 hasItem key =
   Steps.hasItem key Storage.get
 
+haveKeys : List String -> Task Never Outcome
+haveKeys keys =
+  Steps.haveKeys keys Storage.keys
+
 doesNotHaveItem : String -> Task Never Outcome
 doesNotHaveItem key =
   Steps.hasItem key Storage.get
@@ -34,6 +38,10 @@ doesNotHaveItem key =
 valueEquals : String -> String -> Task Never Outcome
 valueEquals key value =
   Steps.valueEquals key value Storage.get
+
+haveNumberOfItems : Int -> Task Never Outcome
+haveNumberOfItems count =
+  Steps.haveNumberOfItems count Storage.length
 
 tests : Node
 tests =
@@ -65,6 +73,25 @@ tests =
         , doesNotHaveItem "test"
         , remove "test"
         , doesNotHaveItem "test"
+        ]
+      ]
+    , context ".keys"
+      [ it "should return keys"
+        [ clear
+        , haveKeys []
+        , set "test" "test"
+        , set "asd" "asd"
+        , haveKeys ["asd", "test"]
+        ]
+      ]
+    , context ".length"
+      [ it "should return count of items"
+        [ clear
+        , haveNumberOfItems 0
+        , set "test" "test"
+        , haveNumberOfItems 1
+        , set "asd" "asd"
+        , haveNumberOfItems 2
         ]
       ]
     , context ".clear"

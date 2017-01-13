@@ -23,9 +23,8 @@ module Storage.Local exposing
 @docs getSync, setSync, clearSync, removeSync, lengthSync, keysSync
 -}
 import Storage.Error exposing (Error)
-import Native.Storage
-
 import Task exposing (Task)
+import Native.Storage
 
 
 {-| Transforms a function into a task.

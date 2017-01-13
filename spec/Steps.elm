@@ -32,6 +32,27 @@ set key value task =
           " to " ++ (boldString value)))
   |> Task.onError failError
 
+haveNumberOfItems : Int -> Task Error Int -> Task Never Outcome
+haveNumberOfItems count task =
+  task
+  |> Task.map (\length ->
+    if length == count then
+      pass ("have x number of items")
+    else
+      fail ("doesn not have x number of items")
+    )
+  |> Task.onError failError
+
+haveKeys : List String -> Task Error (List String) -> Task Never Outcome
+haveKeys keys task =
+  task
+  |> Task.map (\currentKeys ->
+    if currentKeys == keys then
+      pass ("have keys")
+    else
+      fail ("does not have keys"))
+  |> Task.onError failError
+
 hasItem : String -> (String -> Task Error (Maybe String)) -> Task Never Outcome
 hasItem key task =
   task key
