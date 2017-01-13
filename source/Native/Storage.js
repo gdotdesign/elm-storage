@@ -10,20 +10,9 @@ var _gdotdesign$elm_storage$Native_Storage = function() {
     return err({ ctor: type })
   }
 
-  var withStorage = function(kind, method) {
+  var withErrors = function(method) {
     try {
-      var storage;
-
-      switch(kind) {
-        case 'local':
-          storage = window.localStorage
-          break
-        case 'session':
-          storage = window.sessionStorage
-          break
-      }
-
-      return method(storage)
+      return method()
     } catch (error) {
       switch(error.name) {
         case 'SecurityError':
@@ -36,6 +25,23 @@ var _gdotdesign$elm_storage$Native_Storage = function() {
           return err('Unknown')
       }
     }
+  }
+
+  var withStorage = function(kind, method) {
+    return withErrors(function(){
+      var storage;
+
+      switch(kind) {
+        case 'local':
+          storage = window.localStorage
+          break
+        case 'session':
+          storage = window.sessionStorage
+          break
+      }
+
+      return method(storage)
+    })
   }
 
   var get = function(kind, key) {
@@ -86,7 +92,59 @@ var _gdotdesign$elm_storage$Native_Storage = function() {
     })
   }
 
+  var getCookie = function(name) {
+    return withErrors(function(){
+      var value = Cookies.get(name)
+      if (value) {
+        return ok(just(value))
+      } else {
+        return ok(nothing)
+      }
+    })
+  }
+
+  var setCookie = function(name, value) {
+    return withErrors(function(){
+      Cookies.set(name, value)
+      return ok(tuple0)
+    })
+  }
+
+  var clearCookies = function() {
+    return withErrors(function(){
+      for (var key in Cookies.get()) {
+        Cookies.remove(key)
+      }
+      return ok(tuple0)
+    })
+  }
+
+  var removeCookie = function(name) {
+    return withErrors(function(){
+      Cookies.remove(name)
+      return ok(tuple0)
+    })
+  }
+
+  var cookiesLength = function() {
+    return withErrors(function(){
+      return Object.keys(Cookies.get()).length
+    })
+  }
+
+  var cookieKeys = function(){
+    return withErrors(function(){
+      return fromArray(Object.keys(Cookies.get()).sort())
+    })
+  }
+
   return {
+    cookiesLength: cookiesLength,
+    clearCookies: clearCookies,
+    removeCookie: removeCookie,
+    setCookie: F2(setCookie),
+    cookieKeys: cookieKeys,
+    getCookie: getCookie,
     remove: F2(remove),
     length: length,
     clear: clear,
