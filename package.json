@@ -1,5 +1,6 @@
 {
   "scripts": {
+    "docs": "elm-make --docs=documentation.json spec/LocalSpec.elm",
     "start": "elm-reactor -p 8002"
   },
   "dependencies": {

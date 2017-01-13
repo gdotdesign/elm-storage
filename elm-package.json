@@ -9,6 +9,8 @@
     "spec"
   ],
   "exposed-modules": [
+    "Storage.Local",
+    "Storage.Error"
   ],
   "dependencies": {
     "gdotdesign/elm-spec": "1.0.0 <= v <= 2.0.0",
