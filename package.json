@@ -6,6 +6,6 @@
   "dependencies": {
     "elm": "^0.18.0",
     "elm-github-install": "^0.3.0",
-    "elm-spec": "gdotdesign/elm-spec"
+    "elm-spec": "gdotdesign/elm-spec#1.0.4"
   }
 }

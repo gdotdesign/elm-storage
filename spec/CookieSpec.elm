@@ -1,4 +1,4 @@
-import Spec exposing (Node, describe, it, context)
+import Spec exposing (Node, describe, it, context, before)
 import Spec.Assertions
 import Spec.Runner
 
@@ -34,33 +34,30 @@ removeOptions =
 tests : Node
 tests =
   describe "Storage.Cookie"
-    [ context ".get"
+    [ before
+      [ cookies.clear removeOptions
+      , cookies.doesNotHaveItem "user"
+      , cookies.haveNumberOfItems 0
+      ]
+    , context ".get"
       [ it "should get cookie"
-        [ cookies.clear removeOptions
-        , cookies.doesNotHaveItem "user"
-        , cookies.set "user" "yoda" setOptions
+        [ cookies.set "user" "yoda" setOptions
         , cookies.valueEquals "user" "yoda"
         ]
       ]
     , context ".set"
       [ it "should set cookie"
-        [ cookies.clear removeOptions
-        , cookies.doesNotHaveItem "user"
-        , cookies.set "user" "yoda" setOptions
+        [ cookies.set "user" "yoda" setOptions
         , cookies.valueEquals "user" "yoda"
         ]
       , it "should set cookie for other path"
-        [ cookies.clear removeOptions
-        , cookies.doesNotHaveItem "user"
-        , cookies.set "user" "yoda" otherPathOptions
+        [ cookies.set "user" "yoda" otherPathOptions
         , cookies.doesNotHaveItem "user"
         ]
       ]
     , context ".clear"
       [ it "should clear all cookies"
-        [ cookies.clear removeOptions
-        , cookies.doesNotHaveItem "user"
-        , cookies.set "user" "yoda" setOptions
+        [ cookies.set "user" "yoda" setOptions
         , cookies.set "place" "jedi-temple" setOptions
         , cookies.hasItem "user"
         , cookies.hasItem "place"
@@ -71,9 +68,7 @@ tests =
       ]
     , context ".remove"
       [ it "should remove a cookie"
-        [ cookies.clear removeOptions
-        , cookies.doesNotHaveItem "user"
-        , cookies.set "user" "yoda" setOptions
+        [ cookies.set "user" "yoda" setOptions
         , cookies.hasItem "user"
         , cookies.remove "user" removeOptions
         , cookies.doesNotHaveItem "user"
@@ -81,9 +76,7 @@ tests =
       ]
     , context ".keys"
       [ it "should return keys"
-        [ cookies.clear removeOptions
-        , cookies.doesNotHaveItem "user"
-        , cookies.set "user" "yoda" setOptions
+        [ cookies.set "user" "yoda" setOptions
         , cookies.set "place" "jedi-temple" setOptions
         , cookies.haveNumberOfItems 2
         , cookies.haveItems ["place", "user"]
