@@ -1,6 +1,5 @@
-import Spec exposing (Node, describe, it, context, before)
+import Spec exposing (..)
 import Spec.Assertions
-import Spec.Runner
 
 import Storage.Spec.Session exposing (sessionStorage)
 
@@ -68,4 +67,4 @@ tests =
     ]
 
 main =
-  Spec.Runner.run tests
+  run tests

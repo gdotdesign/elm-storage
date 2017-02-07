@@ -1,5 +1,4 @@
-import Spec exposing (Node, describe, it)
-import Spec.Runner
+import Spec exposing (..)
 
 import Storage.Spec.Local exposing (localStorage)
 
@@ -17,4 +16,4 @@ tests =
     ]
 
 main =
-  Spec.Runner.run tests
+  run tests

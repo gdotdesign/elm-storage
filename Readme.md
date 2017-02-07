@@ -1,5 +1,6 @@
 # elm-storage
 [![Build Status](https://travis-ci.org/gdotdesign/elm-storage.svg?branch=master)](https://travis-ci.org/gdotdesign/elm-storage)
+![Elm Package Version](https://img.shields.io/badge/elm%20package-1.0.0-brightgreen.svg)
 
 This module provides a unified interface for accessing and modifying
 **LocalStorage**, **SessionStorage** and **Cookies**.
@@ -62,7 +63,7 @@ type alias SetOptions =
   , secure : Bool
   , path : String
   }
-  
+
 type alias RemoveOptions =
   { domain : String
   , path : String
@@ -73,8 +74,7 @@ type alias RemoveOptions =
 The module contains **steps and assertions** to use with [elm-spec](https://github.com/gdotdesign/elm-spec). Check out the [specs](spec) on how to use them, and here is a quick example:
 
 ```elm
-import Spec exposing (Node, describe, it)
-import Spec.Runner
+import Spec exposing (..)
 
 import Storage.Spec.Local exposing (localStorage)
 
@@ -92,5 +92,5 @@ tests =
     ]
 
 main =
-  Spec.Runner.run tests
+  run tests
 ```

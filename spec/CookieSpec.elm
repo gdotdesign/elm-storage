@@ -1,6 +1,4 @@
-import Spec exposing (Node, describe, it, context, before)
-import Spec.Assertions
-import Spec.Runner
+import Spec exposing (..)
 
 import Storage.Cookie exposing (SetOptions, RemoveOptions)
 import Storage.Spec.Cookie exposing (cookies)
@@ -85,4 +83,4 @@ tests =
     ]
 
 main =
-  Spec.Runner.run tests
+  run tests
